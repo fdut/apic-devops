@@ -11,6 +11,11 @@ devServer = "manager.169.51.141.12.xip.io"
 devCatalog = "dev"
 devOrg = "itorg"
 
+intServer = "api-manager-ui.manager-api-ova.swgtec.fr.ibm.com"
+intCatalog = "integration"
+intOrg = "forg"
+intCreds = "forg-9"
+
 testServer = ""
 testCatalog = ""
 testOrg = ""
@@ -32,10 +37,17 @@ node {
 
         //gitCheckout(env.WORKSPACE, jenkinsfileURL, jenkinsfileBranch, creds)  
 
-        apic_initiate() 
+        // initiate after apic cli import
+        //apic_initiate() 
 
         //Login 
-        apic_login(devServer, creds)
+        apic_login(intServer, intCreds)
+
+        //Publish to integration server
+        //deploy(intServer, creds, product, intCatalog, intOrg)
+
+        //Publish to integration server
+        //deploy(intServer, creds, product, intCatalog, intOrg)
 
         //Publish to dev server
         //deploy(devServer, creds, product, devCatalog, devOrg)
