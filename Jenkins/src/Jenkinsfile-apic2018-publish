@@ -1,35 +1,17 @@
 // Pull in default Jenkinsfile
 jenkinsfileURL = "https://github.com/fdut/apicv2018-devops"
-jenkinsfileBranch = "master"
 
 product = "randomuser-product_1.0.0.yaml"
+
 //Name of credential object in Jenkins
 creds = "fdutorg-169"
 
 //APIC Environment variables
-devServer = "manager.169.51.141.12.xip.io"
-devCatalog = "dev"
-devOrg = "itorg"
-
 intServer = "api-manager-ui.manager-api-ova.swgtec.fr.ibm.com"
 intCatalog = "integration"
 intOrg = "forg"
 intCreds = "forg-9"
 intRealm = "provider/default-idp-2"
-
-testServer = ""
-testCatalog = ""
-testOrg = ""
-
-serverStg = ""
-spaceStg = ""
-catalogStg = ""
-orgStg = ""
-
-prodServer = ""
-prodCatalog = ""
-prodOrg = ""
-prodSpace = ""
 
 node {    
 
