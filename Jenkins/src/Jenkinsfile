@@ -90,7 +90,7 @@ def gitCheckout(String workspace, String url, String branch, String credentialsI
             rm -rf ${workspace}/tmp
             git clone ${jenkinsfileURL} ${workspace}/tmp
             cd ${workspace}/tmp
-            echo `pwd && ls -l     
+            echo pwd && ls -l     
         """
     }
 }
@@ -104,7 +104,7 @@ def deploy(String server, String creds, String product, String catalog, String o
         //Login to Dev Server
         try {
             echo "Attempting Login to ${server}"                     
-            login(server, creds)                      
+            apic_login(server, creds)                      
         } catch(exe){
             echo "Failed to Login to ${server} with Status Code: ${exe}"
             throw exe                       
@@ -113,7 +113,7 @@ def deploy(String server, String creds, String product, String catalog, String o
         //Publish to dev server
         //If the status code is non zero i.e. publish failed, abort the pipeline.
         //def status = apic.publish(product, catalog, org, server, space)
-        def status = publish(product, catalog, org, server, space)
+        def status = apic_publish(product, catalog, org, server, space)
         if(status != 0) 
         {
             currentBuild.result = "FAILED"
@@ -124,7 +124,7 @@ def deploy(String server, String creds, String product, String catalog, String o
         logoutFailed = false
         try {
             //apic.logout(server)
-            logout(server)
+            apic_logout(server)
             echo "Logged out of ${server}"
         } catch (exe) {
             echo "Failed to Log out with Status Code: ${exe}, check Environment manually."
@@ -148,15 +148,16 @@ def apic_login(String server, String creds){
     echo "Successfully Logged In:  ${usernameVariableLocal}@${server}"
 }
 
-def logout(String server){
+def apic_logout(String server){
     sh "apic logout -s ${server}"
 }
 
 //Publish to Catalog or Space
-def publish(String product, String catalog, String org, String server, String space = ""){
+def apic_publish(String product, String catalog, String org, String server, String space = ""){
     echo "Publishing product ${product}"
     if (!space.trim()) {
-        def status = sh script: "apic publish ${product} --catalog ${catalog} --organization ${org} --server ${server}", 
+        // apic products:publish -c production -o org1 -s manager.apic.carrefour-apim.fr --scope catalog demo-product_1.0.1.yaml
+        def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog ${product} ", 
             returnStatus: true  
         return status  
     }
