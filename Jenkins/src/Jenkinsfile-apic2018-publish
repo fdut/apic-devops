@@ -110,20 +110,6 @@ def apic_login(String server, String creds){
     echo "Successfully Logged In:  ${usernameVariableLocal}@${server}"
 }
 
-def git_creds = 'fb85701a-9f10-4056-9ae7-420e3XXXX9ef'
-node {
-  withCredentials([
-      [$class: 'UsernamePasswordMultiBinding', credentialsId: git_creds, usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS'],
-  ]){
-    stage ('echo variables') {
-      sh """(
-        echo "User: ${GIT_USER}"
-        echo "Pass: ${GIT_PASS}"
-      )"""
-    }
-  }
-}
-
 
 def apic_logout(String server){
     sh "apic logout -s ${server}"
@@ -132,15 +118,17 @@ def apic_logout(String server){
 //Publish to Catalog or Space
 def apic_publish(String product, String catalog, String org, String server, String space = ""){
     echo "Publishing product ${product}"
-    if (!space.trim()) {
-        // apic products:publish -c production -o org1 -s manager.apic.carrefour-apim.fr --scope catalog demo-product_1.0.1.yaml
-        def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog tmp/${product} ", 
-            returnStatus: true  
-        return status  
-    }
-    else {
-        def status = sh script: "apic publish --scope space ${product} --space ${space} --catalog ${catalog} --organization ${org} --server ${server}", 
-            returnStatus: true  
-        return status          
-    }    
+    stage ('Publish') {
+        if (!space.trim()) {
+            // apic products:publish -c production -o org1 -s manager.apic.carrefour-apim.fr --scope catalog demo-product_1.0.1.yaml
+            def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog tmp/${product} ", 
+                returnStatus: true  
+            return status  
+        }
+        else {
+            def status = sh script: "apic publish --scope space ${product} --space ${space} --catalog ${catalog} --organization ${org} --server ${server}", 
+                returnStatus: true  
+            return status          
+        } 
+   }    
 } 
