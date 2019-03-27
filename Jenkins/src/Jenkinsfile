@@ -1,8 +1,8 @@
 // Pull in default Jenkinsfile
-jenkinsfileURL = ""
+jenkinsfileURL = "https://github.com/fdut/apicv2018-devops"
 jenkinsfileBranch = "master"
 
-product = "sample-product_1.0.0.yaml"
+product = "randomuser-product_1.0.0.yaml"
 //Name of credential object in Jenkins
 creds = "fdutorg-169"
 
@@ -36,7 +36,7 @@ node {
     try{
         echo "Workspace: ${env.WORKSPACE}"
 
-        //gitCheckout(env.WORKSPACE, jenkinsfileURL, jenkinsfileBranch, creds)  
+        gitCheckout(env.WORKSPACE, jenkinsfileURL, jenkinsfileBranch, creds)  
 
         // initiate after apic cli import
         //apic_initiate() 
@@ -45,7 +45,7 @@ node {
         apic_login(intServer, intCreds)
 
         //Publish to integration server
-        //deploy(intServer, creds, product, intCatalog, intOrg)
+        deploy(intServer, intCreds, product, intCatalog, intOrg)
 
         //Publish to integration server
         //deploy(intServer, creds, product, intCatalog, intOrg)
@@ -88,7 +88,7 @@ def gitCheckout(String workspace, String url, String branch, String credentialsI
         //Delete the content of the workspace and clone the source code into current directory
         sh """
             rm -fr ${workspace}/*
-            git clone -b ${branch} ${urlWithCreds} .
+            git clone -b ${branch} .
             cd ${workspace}
             echo `pwd && ls -l     
         """
