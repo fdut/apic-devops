@@ -78,16 +78,18 @@ def deploy(String server, String creds, String product, String catalog, String o
             }  
         } 
         //Logout for dev server
-        logoutFailed = false
-        try {
-            //apic.logout(server)
-            apic_logout(server)
-            echo "Logged out of ${server}"
-        } catch (exe) {
-            echo "Failed to Log out with Status Code: ${exe}, check Environment manually."
-            logoutFailed = true
-            throw exe
-        }    
+        stage ('Logout') {
+            logoutFailed = false
+            try {
+                //apic.logout(server)
+                apic_logout(server)
+                echo "Logged out of ${server}"
+            } catch (exe) {
+                echo "Failed to Log out with Status Code: ${exe}, check Environment manually."
+                logoutFailed = true
+                throw exe
+            } 
+        }   
 }
 
 def apic_login(String server, String creds){
