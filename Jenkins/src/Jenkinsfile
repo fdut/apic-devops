@@ -87,9 +87,9 @@ def gitCheckout(String workspace, String url, String branch, String credentialsI
         
         //Delete the content of the workspace and clone the source code into current directory
         sh """
-            rm -fr ${workspace}/*
-            git clone -b ${branch} .
-            cd ${workspace}
+            rm -rf ${workspace}/tmp
+            git clone ${jenkinsfileURL} ${workspace}/tmp
+            cd ${workspace}/tmp
             echo `pwd && ls -l     
         """
     }
