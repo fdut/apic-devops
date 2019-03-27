@@ -96,14 +96,34 @@ def apic_login(String server, String creds){
         usernameVariableLocal = env.USERNAME
         passwordVariableLocal = env.PASSWORD
         
+        stage ('Login') {
         //Ensure the windows batch script is called from withCredentials step else the 
         //credentials will not be masked in the log output        
         //v5 -- sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal}"    
-        sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal} -r provider/default-idp-2"
-        sh 'apic login -s $server -u $usernameVariableLocal -p $passwordVariableLocal -r provider/default-idp-2'   
+        //sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal} -r provider/default-idp-2"
+        sh """(
+            apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal} -r provider/default-idp-2
+        )"""
+        } 
     } 
+
     echo "Successfully Logged In:  ${usernameVariableLocal}@${server}"
 }
+
+def git_creds = 'fb85701a-9f10-4056-9ae7-420e3XXXX9ef'
+node {
+  withCredentials([
+      [$class: 'UsernamePasswordMultiBinding', credentialsId: git_creds, usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS'],
+  ]){
+    stage ('echo variables') {
+      sh """(
+        echo "User: ${GIT_USER}"
+        echo "Pass: ${GIT_PASS}"
+      )"""
+    }
+  }
+}
+
 
 def apic_logout(String server){
     sh "apic logout -s ${server}"
