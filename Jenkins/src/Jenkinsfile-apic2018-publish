@@ -69,13 +69,14 @@ def deploy(String server, String creds, String product, String catalog, String o
         //Publish to dev server
         //If the status code is non zero i.e. publish failed, abort the pipeline.
         //def status = apic.publish(product, catalog, org, server, space)
-        def status = apic_publish(product, catalog, org, server, space)
-        if(status != 0) 
-        {
+        stage ('Publish') {
+            def status = apic_publish(product, catalog, org, server, space)
+            if(status != 0) 
+            {
             currentBuild.result = "FAILED"
             error("[FAILURE] Failed to publish ${product}")
-        }  
-
+            }  
+        } 
         //Logout for dev server
         logoutFailed = false
         try {
