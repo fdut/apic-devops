@@ -157,7 +157,7 @@ def apic_publish(String product, String catalog, String org, String server, Stri
     echo "Publishing product ${product}"
     if (!space.trim()) {
         // apic products:publish -c production -o org1 -s manager.apic.carrefour-apim.fr --scope catalog demo-product_1.0.1.yaml
-        def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog ${product} ", 
+        def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog tmp/${product} ", 
             returnStatus: true  
         return status  
     }
