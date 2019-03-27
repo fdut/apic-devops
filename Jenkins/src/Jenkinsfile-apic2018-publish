@@ -18,7 +18,7 @@ node {
     try{
         echo "Workspace: ${env.WORKSPACE}"
 
-        gitCheckout(env.WORKSPACE, jenkinsfileURL, jenkinsfileBranch, creds)  
+        gitCheckout(env.WORKSPACE, jenkinsfileURL, creds)  
 
         //Publish to integration server
         deploy(intServer, intCreds, product, intCatalog, intOrg)  
@@ -37,7 +37,7 @@ node {
  * @param  String credentialsId Id of the Git credentials to use
  *  (From the credentials plugin in Cloudbees)
  */
-def gitCheckout(String workspace, String url, String branch, String credentialsId) {
+def gitCheckout(String workspace, String url, String credentialsId) {
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "${credentialsId}",
                       passwordVariable: 'pass', usernameVariable: 'user']]) {
 
