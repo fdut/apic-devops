@@ -15,6 +15,7 @@ intServer = "api-manager-ui.manager-api-ova.swgtec.fr.ibm.com"
 intCatalog = "integration"
 intOrg = "forg"
 intCreds = "forg-9"
+intRealm = "provider/default-idp-2"
 
 testServer = ""
 testCatalog = ""
@@ -142,7 +143,7 @@ def apic_login(String server, String creds){
         //Ensure the windows batch script is called from withCredentials step else the 
         //credentials will not be masked in the log output        
         //v5 -- sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal}"    
-        sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal} -r provider/default-idp-2 --accept-license"    
+        sh 'apic login -s ${server} -u ${usernameVariableLocal} -p "${passwordVariableLocal}" -r provider/default-idp-2'   
     } 
     echo "Successfully Logged In:  ${usernameVariableLocal}@${server}"
 }
