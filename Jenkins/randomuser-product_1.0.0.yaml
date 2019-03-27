@@ -1,0 +1,27 @@
+info:
+  name: randomuser-product
+  title: randomuser-product
+  version: 1.0.0
+gateways:
+  - datapower-api-gateway
+plans:
+  default-plan:
+    rate-limits:
+      default:
+        value: 100/1hour
+    title: Default Plan
+    description: Default Plan
+    approval: false
+visibility:
+  view:
+    type: public
+    orgs: []
+    enabled: true
+  subscribe:
+    type: authenticated
+    orgs: []
+    enabled: true
+product: 1.0.0
+apis:
+  randomuser1.0.0:
+    name: 'randomuser:1.0.0'

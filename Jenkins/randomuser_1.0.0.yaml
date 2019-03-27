@@ -1,0 +1,73 @@
+swagger: '2.0'
+info:
+  title: randomuser
+  x-ibm-name: randomuser
+  version: 1.0.0
+schemes:
+  - https
+basePath: /randomuser
+produces:
+  - application/json
+security:
+  - clientID: []
+securityDefinitions:
+  clientID:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+x-ibm-configuration:
+  phase: realized
+  testable: true
+  enforced: true
+  properties:
+    target-url:
+      value: 'https://randomuser.me/api/?results=10'
+      description: URL of the proxy policy
+      encoded: false
+  cors:
+    enabled: true
+  activity-log:
+    enabled: true
+    error-content: header
+    success-content: activity
+  application-authentication:
+    certificate: false
+  assembly:
+    execute:
+      - invoke:
+          version: 2.0.0
+          title: invoke
+          header-control:
+            type: blacklist
+            values: []
+          parameter-control:
+            type: whitelist
+            values: []
+          timeout: 60
+          verb: GET
+          cache-response: protocol
+          cache-ttl: 900
+          stop-on-error: []
+          target-url: $(target-url)
+  gateway: datapower-api-gateway
+  type: rest
+paths:
+  /api:
+    get:
+      operationId: getRamdomuser
+      responses:
+        '200':
+          description: '{"status":"ok"}'
+          schema:
+            type: string
+      consumes: []
+      produces: []
+    parameters:
+      - name: results
+        in: query
+        required: false
+        description: >-
+          Random User Generator allows you to fetch up to generated users in one
+          request using the results parameter.
+        type: integer
+        format: int32
