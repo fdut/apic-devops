@@ -3,7 +3,7 @@ info:
   title: randomuser-product
   version: 1.0.0
 gateways:
-  - datapower-api-gateway
+- datapower-api-gateway
 plans:
   default-plan:
     rate-limits:
@@ -24,4 +24,4 @@ visibility:
 product: 1.0.0
 apis:
   randomuser1.0.0:
-    name: 'randomuser:1.0.0'
+    $ref: randomuser_1.0.0.yaml
