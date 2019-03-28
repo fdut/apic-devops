@@ -142,7 +142,6 @@ def apic_login(String server, String creds){
         
         //Ensure the windows batch script is called from withCredentials step else the 
         //credentials will not be masked in the log output        
-        //v5 -- sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal}"    
         sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal} -r provider/default-idp-2"   
     } 
     echo "Successfully Logged In:  ${usernameVariableLocal}@${server}"
@@ -156,7 +155,6 @@ def apic_logout(String server){
 def apic_publish(String product, String catalog, String org, String server, String space = ""){
     echo "Publishing product ${product}"
     if (!space.trim()) {
-        // apic products:publish -c production -o org1 -s manager.apic.carrefour-apim.fr --scope catalog demo-product_1.0.1.yaml
         def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog tmp/${product} ", 
             returnStatus: true  
         return status  
