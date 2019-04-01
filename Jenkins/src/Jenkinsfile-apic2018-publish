@@ -100,7 +100,7 @@ def apic_login(String server, String creds){
         passwordVariableLocal = env.PASSWORD
         
         stage ('Login') {     
-        sh "apic login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal} -r provider/default-idp-2"
+        sh "apic-slim login -s ${server} -u ${usernameVariableLocal} -p ${passwordVariableLocal} -r provider/default-idp-2"
         } 
     } 
 
@@ -109,19 +109,19 @@ def apic_login(String server, String creds){
 
 
 def apic_logout(String server){
-    sh "apic logout -s ${server}"
+    sh "apic-slim logout -s ${server}"
 }
 
 //Publish to Catalog or Space
 def apic_publish(String product, String catalog, String org, String server, String space = ""){
     echo "Publishing product ${product}"
         if (!space.trim()) {
-            def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog tmp/${product} ", 
+            def status = sh script: "apic-slim products:publish  -c ${catalog} -o ${org} -s ${server} --scope catalog tmp/${product} ", 
                 returnStatus: true  
             return status  
         }
         else {
-        def status = sh script: "apic products:publish  -c ${catalog} -o ${org} -s ${server} --space ${space} --scope space tmp/${product} ", 
+        def status = sh script: "apic-slim products:publish  -c ${catalog} -o ${org} -s ${server} --space ${space} --scope space tmp/${product} ", 
             returnStatus: true  
         return status     
         }  
